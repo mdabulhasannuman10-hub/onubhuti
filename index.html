@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b0b0b">
+<title>অনুভূতি — মনের কথাগুলো</title>
+<style>
+*{box-sizing:border-box}
+:root{--gold:#d6b45b;--bg:#0b0b0b;--card:#151515;--muted:#aaa}
+body{margin:0;background:var(--bg);color:#f5f0e5;font-family:"Noto Serif Bengali",serif}
+header{padding:28px 16px 20px;text-align:center;border-bottom:1px solid #4c4023;background:linear-gradient(#19160e,#0b0b0b)}
+.logo{font-size:34px;font-weight:bold;color:var(--gold);letter-spacing:2px}
+header p{color:#c5b991;margin:8px 0 0}
+nav{display:flex;gap:8px;overflow-x:auto;padding:14px}
+button,.category{cursor:pointer;border:1px solid #574821;border-radius:10px;padding:10px 14px;background:#17150f;color:var(--gold);font:inherit;white-space:nowrap}
+button:hover,.category.active{background:var(--gold);color:#111}
+main{max-width:850px;margin:auto;padding:14px}
+.feature{padding:24px 18px;text-align:center;border:1px solid #8b7136;border-radius:16px;background:linear-gradient(140deg,#211b0c,#111);margin:10px 0 22px}
+.feature small,.tag{color:var(--gold)}
+.feature h2{font-size:22px;line-height:1.8;font-weight:normal}
+.search{width:100%;padding:14px;background:#171717;border:1px solid #514425;border-radius:10px;color:white;font:inherit;margin-bottom:16px}
+.section-title{color:var(--gold);font-size:21px}
+.cards{display:grid;grid-template-columns:1fr;gap:12px}
+.card{border:1px solid #33302a;border-radius:12px;background:var(--card);padding:17px}
+.card p{font-size:18px;line-height:1.9;white-space:pre-wrap}
+.author{font-size:13px;color:var(--gold);margin:12px 0}
+.actions{display:flex;gap:7px;flex-wrap:wrap}
+.actions button{font-size:14px;padding:8px 10px}
+.empty{color:var(--muted);text-align:center;padding:25px}
+footer{text-align:center;padding:28px 12px;color:#93865f;border-top:1px solid #302817;margin-top:35px}
+#admin{display:none;border:1px solid #76602c;padding:16px;border-radius:12px;margin-top:22px}
+#admin input,#admin textarea,#admin select{display:block;width:100%;margin:10px 0;padding:12px;background:#171717;color:white;border:1px solid #514425;border-radius:8px;font:inherit}
+#admin textarea{min-height:110px}
+.notice{font-size:13px;color:#b8ad8d;line-height:1.7}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">অনুভূতি</div>
+  <p>মনের কথাগুলো, শব্দের পাতায়...</p>
+</header>
+
+<nav id="categories">
+  <button class="category active" data-cat="সব">সব লেখা</button>
+  <button class="category" data-cat="ভালোবাসা">ভালোবাসা</button>
+  <button class="category" data-cat="কষ্ট ও অভিমান">কষ্ট ও অভিমান</button>
+  <button class="category" data-cat="উক্তি">উক্তি</button>
+  <button class="category" data-cat="গল্প ও কবিতা">গল্প ও কবিতা</button>
+  <button class="category" data-cat="জীবনের বাস্তবতা">জীবনের বাস্তবতা</button>
+  <button class="category" data-cat="অনুপ্রেরণা">অনুপ্রেরণা</button>
+</nav>
+
+<main>
+  <section class="feature">
+    <small>✦ আজকের অনুভূতি ✦</small>
+    <h2>“কিছু অনুভূতি মুখে বলা যায় না, নীরবতাই একদিন তাদের গল্প হয়ে ওঠে।”</h2>
+    <div class="author">— নুমান</div>
+  </section>
+
+  <input class="search" id="search" placeholder="🔍 লেখা বা শব্দ খুঁজুন..." aria-label="লেখা খুঁজুন">
+
+  <h2 class="section-title" id="listTitle">সব লেখা</h2>
+  <div class="cards" id="cards"></div>
+
+  <section id="admin">
+    <h2 class="section-title">✦ Admin Panel</h2>
+    <p class="notice">এটি প্রাথমিক ডেমো। এখানে যোগ করা লেখা এই ব্রাউজারেই সংরক্ষিত হবে; অন্য পাঠকের কাছে অনলাইনে প্রকাশ হবে না।</p>
+    <input id="adminPass" type="password" placeholder="ডেমো পাসওয়ার্ড">
+    <button id="login">Admin প্রবেশ</button>
+    <div id="editor" style="display:none">
+      <input id="editId" type="hidden">
+      <input id="title" placeholder="লেখার শিরোনাম">
+      <select id="category">
+        <option>ভালোবাসা</option><option>কষ্ট ও অভিমান</option>
+        <option>উক্তি</option><option>গল্প ও কবিতা</option>
+        <option>জীবনের বাস্তবতা</option><option>অনুপ্রেরণা</option>
+      </select>
+      <textarea id="body" placeholder="তোমার লেখা এখানে লিখো..."></textarea>
+      <input id="author" placeholder="লেখকের নাম" value="নুমান">
+      <button id="save">লেখা সংরক্ষণ</button>
+      <button id="cancel">বাতিল</button>
+      <button id="logout">লগআউট</button>
+    </div>
+  </section>
+  <p style="text-align:center;margin-top:24px">
+    <button id="adminToggle">✦ Admin Panel</button>
+  </p>
+</main>
+
+<footer>© অনুভূতি · শব্দে বেঁচে থাকুক অনুভব</footer>
+
+<script>
+const starter=[
+{id:1,title:"নীরবতার ভাষা",category:"কষ্ট ও অভিমান",body:"সব কষ্ট চোখের জলে প্রকাশ পায় না। কিছু কষ্ট হাসির আড়ালে থেকে যায়, আর মানুষ ভাবে—সবকিছু ঠিক আছে।",author:"নুমান"},
+{id:2,title:"ভালোবাসা মানে",category:"ভালোবাসা",body:"ভালোবাসা শুধু কাউকে কাছে পাওয়ার নাম নয়; তার অনুভূতিকে বোঝা, সম্মান করা আর তার ভালো থাকাটাও কামনা করা।",author:"নুমান"},
+{id:3,title:"জীবনের বাস্তবতা",category:"জীবনের বাস্তবতা",body:"সময় বদলায়, মানুষ বদলায়, বদলে যায় সম্পর্কের ভাষা। তবু কিছু স্মৃতি থেকে যায়—নীরবে, নিজের মতো করে।",author:"নুমান"},
+{id:4,title:"নিজের কাছে প্রশ্ন",category:"উক্তি",body:"আমি কি সত্যিই মানুষকে হারানোর ভয়ে বাঁচি, নাকি নিজেকে হারিয়ে ফেলব বলে ভয় পাই?",author:"নুমান"},
+{id:5,title:"আবার শুরু",category:"অনুপ্রেরণা",body:"একটি কঠিন দিন তোমার পুরো জীবন নয়। ধীরে এগিয়ে চলো—ছোট ছোট পদক্ষেপেও নতুন পথ তৈরি হয়।",author:"নুমান"}
+];
+let writings=[];
+try{writings=JSON.parse(localStorage.getItem("onubhuti_writings"))||starter.slice()}
+catch(e){writings=starter.slice()}
+let selected="সব",favorites=[];
+try{favorites=JSON.parse(localStorage.getItem("onubhuti_favs"))||[]}
+catch(e){favorites=[]}
+let loggedIn=false;
+
+const cards=document.getElementById("cards");
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+function render(){
+ const q=document.getElementById("search").value.trim().toLowerCase();
+ const list=writings.filter(w=>(selected==="সব"||w.category===selected)&&
+ (String(w.title+" "+w.body+" "+w.author+" "+w.category).toLowerCase().includes(q)));
+ document.getElementById("listTitle").textContent=selected;
+ if(!list.length){cards.innerHTML='<div class="empty">এখানে কোনো লেখা পাওয়া যায়নি।</div>';return}
+ cards.innerHTML=list.map(w=>`
+ <article class="card">
+ <span class="tag">${esc(w.category)}</span>
+ <h3>${esc(w.title)}</h3>
+ <p>${esc(w.body)}</p>
+ <div class="author">— ${esc(w.author||"নুমান")}</div>
+ <div class="actions">
+ <button onclick="copyText(${w.id})">কপি</button>
+ <button onclick="shareText(${w.id})">শেয়ার</button>
+ <button onclick="favorite(${w.id})">${favorites.includes(w.id)?"★ পছন্দে আছে":"☆ পছন্দ"}</button>
+ ${loggedIn?`<button onclick="editWriting(${w.id})">সম্পাদনা</button><button onclick="deleteWriting(${w.id})">মুছুন</button>`:""}
+ </div></article>`).join("");
+}
+function getWriting(id){return writings.find(w=>w.id===id)}
+function copyText(id){
+ const w=getWriting(id);if(!w)return;
+ const t=w.title+"\n"+w.body+"\n— "+w.author;
+ if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(()=>alert("লেখা কপি হয়েছে।")).catch(()=>prompt("লেখাটি কপি করো:",t));
+ else prompt("লেখাটি কপি করো:",t);
+}
+function shareText(id){
+ const w=getWriting(id);if(!w)return;
+ const data={title:w.title,text:w.title+"\n"+w.body+"\n— "+w.author};
+ if(navigator.share)navigator.share(data).catch(()=>{});
+ else copyText(id);
+}
+function favorite(id){
+ favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id];
+ localStorage.setItem("onubhuti_favs",JSON.stringify(favorites));render();
+}
+document.querySelectorAll(".category").forEach(b=>b.addEventListener("click",()=>{
+ selected=b.dataset.cat;
+ document.querySelectorAll(".category").forEach(x=>x.classList.toggle("active",x===b));
+ render();
+}));
+document.getElementById("search").addEventListener("input",render);
+document.getElementById("adminToggle").onclick=()=>{
+ const a=document.getElementById("admin");
+ a.style.display=a.style.display==="block"?"none":"block";
+};
+document.getElementById("login").onclick=()=>{
+ if(document.getElementById("adminPass").value==="onubhuti-demo"){
+ loggedIn=true;document.getElementById("editor").style.display="block";
+ document.getElementById("login").style.display="none";
+ document.getElementById("adminPass").style.display="none";render();
+ }else alert("ডেমো পাসওয়ার্ড মিলেনি।");
+};
+document.getElementById("logout").onclick=()=>{
+ loggedIn=false;document.getElementById("editor").style.display="none";
+ document.getElementById("login").style.display="inline-block";
+ document.getElementById("adminPass").style.display="block";
+ document.getElementById("adminPass").value="";clearForm();render();
+};
+function clearForm(){
+ document.getElementById("editId").value="";
+ document.getElementById("title").value="";
+ document.getElementById("body").value="";
+ document.getElementById("author").value="নুমান";
+}
+document.getElementById("cancel").onclick=clearForm;
+document.getElementById("save").onclick=()=>{
+ if(!loggedIn)return;
+ const title=document.getElementById("title").value.trim();
+ const body=document.getElementById("body").value.trim();
+ if(!title||!body){alert("শিরোনাম ও লেখা পূরণ করো।");return}
+ const id=document.getElementById("editId").value;
+ const item={id:id?Number(id):Date.now(),title,body,
+ category:document.getElementById("category").value,
+ author:document.getElementById("author").value.trim()||"নুমান"};
+ writings=id?writings.map(w=>w.id===Number(id)?item:w):[item,...writings];
+ localStorage.setItem("onubhuti_writings",JSON.stringify(writings));
+ clearForm();render();alert("এই ব্রাউজারে লেখা সংরক্ষিত হয়েছে।");
+};
+window.editWriting=id=>{
+ const w=getWriting(id);if(!w||!loggedIn)return;
+ document.getElementById("editId").value=w.id;
+ document.getElementById("title").value=w.title;
+ document.getElementById("body").value=w.body;
+ document.getElementById("author").value=w.author;
+ document.getElementById("category").value=w.category;
+ document.getElementById("admin").scrollIntoView({behavior:"smooth"});
+};
+window.deleteWriting=id=>{
+ if(!loggedIn||!confirm("এই লেখা মুছে ফেলবে?"))return;
+ writings=writings.filter(w=>w.id!==id);
+ localStorage.setItem("onubhuti_writings",JSON.stringify(writings));render();
+};
+render();
+</script>
+</body>
+</html>
